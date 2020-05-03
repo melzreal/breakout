@@ -1,9 +1,11 @@
 # breakout
 Js codealong to learn how to use the canvas api
 
-[] - Create canvas context
-[] - Create and draw ball
-[] - Create and draw paddle
+https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+
+[x] - Create canvas context
+[x] - Create and draw ball
+[x] - Create and draw paddle
 [] - Create bricks - we will need a nested array for all the bricks and those bricks will need a visible property for us to manipulate
 [] - Draw score
 [] - Create canvas context
