@@ -23,11 +23,5 @@ canvas {
   background: white;
   display: block;
   border-radius: 5px;
-}
-
-.btn {
-  cursor: pointer;
-  border: 0;
-  padding: 10px 20px;
-  background: wheat;
+  border-style: solid;
 }

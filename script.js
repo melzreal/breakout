@@ -3,6 +3,9 @@ const ctx = canvas.getContext('2d');
 
 let score = 0;
 
+const brickRowsCount = 9;
+const brickColumnsCount = 5;
+
 //make the ball start right in the middle by getting the canvas and splitting
 const ball = {
   x: canvas.width / 2,
@@ -23,7 +26,27 @@ const paddle = {
   dx: 0
 }
 
+const bricksInfo = {
+  w: 70,
+  h: 20,
+  padding: 10,
+  offsetX: 45,
+  offsetY: 60,
+  visible: true
+}
 
+const bricks = [];
+
+//we create an array for each row of bricks
+//then we create an array of the columns with the bricks inside
+for(let i =0; i < brickRowsCount; i++){
+  bricks[i] = [];
+  for(let j = 0; j < brickColumnsCount; j++){
+    const x = i * (bricksInfo.w + bricksInfo.padding) + bricksInfo.offsetX;
+    const y = j * (bricksInfo.h + bricksInfo.padding) + bricksInfo.offsetY;
+    bricks[i][j] = { x, y, ...bricksInfo }
+  }
+}
 //beginPath belongs to the context api, a way to begin drawing 
 function drawBall() {
   ctx.beginPath();
@@ -41,11 +64,26 @@ function drawPaddle(){
   ctx.closePath();
 }
 
+function drawBricks(){
+  bricks.forEach( col => {
+    col.forEach( brick => {
+      ctx.beginPath();
+      ctx.rect(brick.x, brick.y, brick.w, brick.h);
+      ctx.fillStyle = brick.visible ? '#0a0b0d' : 'transparent';
+      ctx.fill();
+      ctx.closePath();
+    })
+  })
+}
+
+
 function draw(){
   drawBall();
   drawPaddle();
-  drawScore()
+  drawScore();
+  drawBricks();
 }
+
 
 //100 for the x axis, 30 for the y axis to position our score
 function drawScore(){
