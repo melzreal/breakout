@@ -77,7 +77,28 @@ function drawBricks(){
 }
 
 
+//100 for the x axis, 30 for the y axis to position our score
+function drawScore(){
+  ctx.font = '20px Arial';
+  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30 );
+}
+
+//everytime we redraw, we change the paddle values
+function modePaddle(){
+  paddle.x += paddle.dx;
+
+  //detect the wall 
+  if(paddle.x + paddle.w > canvas.width){
+    paddle.x = canvas.width - paddle.w; 
+  }
+
+  if(paddle.x < 0){
+    paddle.x = 0;
+  }
+}
+
 function draw(){
+  ctx.clearRect( 0, 0, canvas.width, canvas.height);
   drawBall();
   drawPaddle();
   drawScore();
@@ -85,10 +106,27 @@ function draw(){
 }
 
 
-//100 for the x axis, 30 for the y axis to position our score
-function drawScore(){
-  ctx.font = '20px Arial';
-  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30 );
+function update(){
+  modePaddle();
+  draw();
+  requestAnimationFrame(update)
 }
 
-draw();
+update();
+
+function keyDown(e){
+  if(e.key === 'Right' || e.key === 'ArrowRight'){
+    paddle.dx = paddle.speed;
+  } else if(e.key === 'Left' || e.key === 'ArrowLeft'){
+    paddle.dx = -paddle.speed;
+  }
+}
+
+function keyUp(e){
+  if(e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft'){
+    paddle.dx = 0;
+  } 
+
+}
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
