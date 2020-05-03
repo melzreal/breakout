@@ -15,7 +15,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
 [ x ] - Create canvas context
 [ x ] - Add update() - Animate - requestAnimationFrame(cb)
 [ x ] - Move paddle with keyboard events 
-[ ] - Move ball
-[ ] - Add wall boundaries 
-[ ] - Increase score on bricks broken action
-[ ] - Lose - redraw and reset 
+[ x ] - Move ball
+[ x ] - Add wall boundaries 
+[ x ]- Increase score on bricks broken action
+[ x ] - Lose - redraw and reset 

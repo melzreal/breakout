@@ -84,7 +84,7 @@ function drawScore(){
 }
 
 //everytime we redraw, we change the paddle values
-function modePaddle(){
+function movePaddle(){
   paddle.x += paddle.dx;
 
   //detect the wall 
@@ -97,6 +97,70 @@ function modePaddle(){
   }
 }
 
+function moveBall(){
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  //detect wall
+  if(ball.x + ball.size > canvas.width || ball.x - ball.size < 0){
+    ball.dx *= -1; 
+  }
+
+  if(ball.y + ball.size > canvas.height || ball.y - ball.size < 0){
+    ball.dy *= -1; 
+  }
+
+  //detect paddle 
+  if(ball.x - ball.size > paddle.x && 
+    ball.x + ball.size < paddle.x + paddle.w &&
+    ball.y + ball.size > paddle.y){
+      ball.dy = -ball.speed;
+    } 
+
+  //detect bricks
+  bricks.forEach(col => {
+    col.forEach(brick => {
+      if (brick.visible) {
+        if (
+          ball.x - ball.size > brick.x && // left brick side check
+          ball.x + ball.size < brick.x + brick.w && // right brick side check
+          ball.y + ball.size > brick.y && // top brick side check
+          ball.y - ball.size < brick.y + brick.h // bottom brick side check
+        ){
+          ball.dy *= -1;
+          brick.visible = false;
+
+          increaseScore();
+        } 
+      }
+    });
+  });
+
+  //lose when we hit the bottom
+  if(ball.y + ball.size > canvas.height){
+    showAllBricks();
+  }
+
+}
+
+function increaseScore(){
+  score++;
+
+  if(score % (brickRowsCount * brickRowsCount) === 0){
+    showAllBricks();
+  }
+}
+
+function showAllBricks(){
+  bricks.forEach( col => {
+    col.forEach( brick => {
+      brick.visible = true;
+    })
+  })
+}
+    
+
+
 function draw(){
   ctx.clearRect( 0, 0, canvas.width, canvas.height);
   drawBall();
@@ -107,9 +171,10 @@ function draw(){
 
 
 function update(){
-  modePaddle();
+  movePaddle();
+  moveBall();
   draw();
-  requestAnimationFrame(update)
+  requestAnimationFrame(update);
 }
 
 update();
@@ -126,7 +191,7 @@ function keyUp(e){
   if(e.key === 'Right' || e.key === 'ArrowRight' || e.key === 'Left' || e.key === 'ArrowLeft'){
     paddle.dx = 0;
   } 
-
 }
+
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
